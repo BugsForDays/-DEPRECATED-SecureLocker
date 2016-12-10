@@ -22,6 +22,8 @@ newLalpha = ''
 newnum = ''
 newsym = ''
 
+from itertools import izip_longest
+
 #FRAMEWORK/FUNCTIONS
 
 #ENCRYPTION ASSIST FUNCTIONS
@@ -75,6 +77,8 @@ def decrypt(text, key):
                 decrypted += newnum[findindex(cpnum, text[i])]
             if text[i] in cpsym:
                 decrypted += newsym[findindex(cpsym, text[i])]
+    text = ''
+    key = 0
     return decrypted
 
 
@@ -85,26 +89,29 @@ def createlocker(name):
 
 
 def appendtofile(filename, contents):
-    f = open(filename, 'a')
+    f = open(filename + '.slock', 'a')
     f.write(contents + '\n')
     f.close()
 
 def striplist(list):
     newlist = []
     for i in list:
-        newlist.append(i.rstrip())
+        ele = ''
+        ele = i.rstrip()
+        #ele = ele[1:-1]
+        newlist.append(ele)
     return newlist
 
 def readfile(filename, info):
     lines = []
-    with open(filename, 'r') as f:
+    with open(filename + '.slock', 'r') as f:
         for line in f:
             lines.append(line)
-    keys = lines[1::3]
+    keys = map(int, lines[1::3])
     labels = lines[2::3]
     pwds = lines[3::3]
     if info == 'keys':
-        return striplist(keys)
+        return keys
     if info == 'labels':
         return striplist(labels)
     if info == 'pwds':
@@ -122,18 +129,53 @@ def apenclabelandpwd(filename, label, pwd, key):
     appendtofile(filename, enclbl)
     appendtofile(filename, encpwd)
 
-def declabelandpwd(filename, key, info):
+def declabelandpwd(filename):
+    keys = readfile(filename, 'keys')
+    labels =  readfile(filename,"labels")
+    pwds = readfile(filename,"pwds")
+    ind = 0
+    for key in keys:
+        print key
+        print decrypt(labels[ind], keys[ind])
+        print decrypt(pwds[ind], keys[ind])
+        ind = ind + 1
+    """
+    usrinfo = dict(zip(keys, zip(labels, pwds)))
+    lbl = []
+    pwd = []
+    for key in usrinfo:
+        lbl.append(usrinfo[key][0])
+        pwd.append(usrinfo[key][1])
+        for i in lbl:
+            ind = 0
+            lbldec = []
+            pwddec = []
+            lbldec.append(decrypt(lbl[ind], key))
+            pwddec.append(decrypt(pwd[ind], key))
+            ind += 1
+        print key
+        print lbldec
+        print pwddec
+        """
+    """
+        dict(zip(keys), zip(labels, pwds))
+        print key
+        print decrypt(str(labels), key)
+        print decrypt(str(pwds), key)
+        """
+    """
     label = readfile(filename,'labels')
     pwd = readfile(filename,'pwds')
     if info == 'label':
         return decrypt(str(label), key)
     if info == 'pwd':
         return decrypt(str(pwd), key)
-        
+    """
+
 def apkey(filename, key):
     appendtofile(filename, key)
 
-#MAINFRAME TESTER MOD(THIS IS IT!!)
+#MAINFRAME CMD TESTER MOD(CMD VERSION OF PROGRAM!!)
 choice = raw_input('encrypt, decrypt, or create? >>>')
 if choice == 'encrypt':
     fn = raw_input('file name: ')
@@ -144,13 +186,20 @@ if choice == 'encrypt':
     apenclabelandpwd(fn, lb, pd, int(ky))
 if choice == 'decrypt':
     fn = raw_input('file name: ')
-    keys = readfile(fn, 'keys')
-    #labels = readfile(fn, 'labels')
-    #pwds = readfile(fn, 'pwds')
+    print declabelandpwd(fn)
+    """
     for i in keys:
+        
+    print keys
+    print labels
+    print pwds
+    
+    for i in keys:
+        
         print i
-        print declabelandpwd(fn, int(i), 'label')
-        print declabelandpwd(fn, int(i), 'pwd')
+        print labels[i]
+        print pwds[i]
+        """
 if choice == 'create':
     fn = raw_input('file name: ')
     createlocker(fn)
