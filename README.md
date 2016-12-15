@@ -1,7 +1,7 @@
 # SECURE LOCKER PASSWORD ENCRYTION MANAGER
 ###***************************************************************************
 ###| A PYTHON PASSWORD ENCRYPTION MANAGER                                     |
-###| Created by BugsForDays aka 尸廾工𠃊工尸 乙([GITHUB PROFILE])(https://github.com/BugsForDays "To my Github Profile!!!")|
+###| Created by BugsForDays aka 尸廾工𠃊工尸 乙([GITHUB PROFILE])https://github.com/BugsForDays "To my Github Profile!!!")|
 ###***************************************************************************
 
 #####DOWNLOAD INSTRUCTIONS:
