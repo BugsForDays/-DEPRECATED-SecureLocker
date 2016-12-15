@@ -6,10 +6,17 @@
 ###***************************************************************************
 
 #####DOWNLOAD INSTRUCTIONS:
-1. Go to releases tab in this repo
-2. Download the source code compatible for your system
-3. Unzip the folder SecureLocker-vx.x to any location
-4. Run python script and follow instructions below
+1. Go to releases tab in this repo.
+2. For Windows: Download the SecureLocker.exe.zip file
+
+   For other systems: Download compatible Source Code for your system.
+   
+   NOTE: Source Code folders contain the Python script for the program. You will need a Python interpreter in order to run.
+3. Unzip the folder SecureLocker/Source Code folder to any location.
+4. Create a shortcut if you wish for easier access(Windows only)
+
+   If you downloaded Source Code folders: Run the python script with your favorite interpreter.
+5. Follow instructions below.
 
 #####TO BEGIN:
 1. Register an account
