@@ -28,6 +28,12 @@
 usrname: bill
 pwd: bill
 
+#####CHANGELOG:
+
+v3.2: squashed major bugs, added copy pwd button, new .exe create, icon change
+
+v3.1: stable release not many known bugs, .exe create, first dist
+
 #####TROUBLESHOOTING:
 
 #####Problem: 
