@@ -5,6 +5,8 @@
 ### [GITHUB PROFILE](https://github.com/BugsForDays "To my Github Profile!!!")
 ###***************************************************************************
 
+EDITION: 3.2
+
 #####DOWNLOAD INSTRUCTIONS:
 1. Go to releases tab in this repo.
 2. For Windows: Download the SecureLocker.exe.zip file
