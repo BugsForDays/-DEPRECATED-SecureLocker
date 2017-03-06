@@ -44,7 +44,9 @@ pwd: bill
 
 #####CHANGELOG:
 
-v3.3: added comments to source code with explanations of functions in code
+v3.4: added random key generator,
+
+v3.3: added comments to source code with explanations of functions in code(no UI or content changes)
 
 v3.2: squashed major bugs, added copy pwd button, new .exe create, icon change, removed bill tester account's SL file
 
