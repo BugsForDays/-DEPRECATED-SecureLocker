@@ -30,7 +30,8 @@ newLalpha = ''
 newnum = ''
 newsym = ''
 
-from itertools import izip_longest
+from itertools import zip_longest
+import random
 
 #ENCRYPTION ASSIST FUNCTIONS
 def cpreorderencrypt(cp, key):
@@ -105,7 +106,7 @@ def appendtofile(filename, contents):
     f.close()
 
 def striplist(list):
-    #strips each element in list, returns: stripped newlist as a list 
+    #strips each element in list, returns: stripped newlist as a list
     newlist = []
     for i in list:
         ele = ''
@@ -123,7 +124,7 @@ def readfile(filename, info):
     with open(pcfn, 'r') as f:
         for line in f:
             lines.append(line)
-    keys = map(int, lines[1::3])
+    keys = list(map(int, lines[1::3]))
     labels = lines[2::3]
     pwds = lines[3::3]
     if info == 'keys':
@@ -162,7 +163,7 @@ def readusrsfile():
         ind = ind + 1
     #print decusr
     #print decpd
-    usrinfo = dict(zip(decusr, decpd))
+    usrinfo = dict(list(zip(decusr, decpd)))
     return usrinfo
 
     #INFO TYPES PARSER TESTER MOD
@@ -249,7 +250,7 @@ writetofile(fn + '.slock', "pass")
 #GUI FRAMEWORK|
 #**************
 
-import Tkinter as tk
+import tkinter as tk
 import time
 import os
 
@@ -264,8 +265,8 @@ window.minsize(400,200)
 
 #FUNCTIONS
 def ch():
-    #checks if usrname and pwd match, returns True if correct 
-    for key in users.keys():
+    #checks if usrname and pwd match, returns True if correct
+    for key in list(users.keys()):
           if users[usr.get()] == pas.get():
             return True
 
@@ -282,7 +283,7 @@ def createlocker(name):
 def checkusr(event=None):
     #runs ch() and loads next screen with pwds
     users = readusrsfile()
-    if users.has_key(usr.get()) == True and ch() == True:
+    if (usr.get() in users) == True and ch() == True:
         usrname = str(usr.get())
         confirm.config(text='You have successfully logged on!' )
         usr.delete(0, tk.END)
@@ -311,6 +312,8 @@ def checkusr(event=None):
             pwds = declabelandpwd(f, 'pwds')
             window.clipboard_clear()
             window.clipboard_append(pwds[buttonchoice.get()])
+        #def delpw():
+
         def pwdfromlbl():
             #changes display text of d button and p label
             pwds = readfile(f, 'pwds')
@@ -330,11 +333,24 @@ def checkusr(event=None):
             d.config(command = pwdfromlblbc)
         def encpass():
             #creates new window w/ encrypt pwd prompts, stores pwd, lbl, and key to SL file
+            cv = tk.IntVar()
+            def checkcheck():
+                #checks the checkbutton, whether 1 or 0 and blanks out key field or unblanks
+                if cv.get() == 1:
+                    k.delete(0, tk.END)
+                    k.configure(state=tk.DISABLED)
+                else:
+                    k.configure(state=tk.NORMAL)
             def storeencpass():
                 #makes sure pwds match and stores pwds
                 if newp.get() == newpc.get():
-                    apkey(f[:-6], k.get())
-                    apenclabelandpwd(f[:-6], newl.get(), newp.get(), int(k.get()))
+                    if cv.get() == 1:
+                        pk = random.randint(1, 26)
+                        apkey(f[:-6], str(pk))
+                    else:
+                        pk = int(k.get())
+                        apkey(f[:-6], str(pk))
+                    apenclabelandpwd(f[:-6], newl.get(), newp.get(), pk)
                     conf.config(text='Password has been successfully encrypted!')
                     placebuttons()
                     def close():
@@ -344,12 +360,13 @@ def checkusr(event=None):
                 else:
                     conf.config(text='Passwords do not match. Please retry.')
             t = tk.Toplevel()
-            t.geometry('250x275')
+            t.geometry('250x300')
             l = tk.Label(t, text = 'ENCRYPT A NEW PASSWORD:\n')
             newll = tk.Label(t, text = 'Enter password identifier/label:')
             newl = tk.Entry(t)
             kl = tk.Label(t, text = 'Enter an encryption key(1 - 26):')
             k = tk.Entry(t)
+            kc = tk.Checkbutton(t, text="Auto select a random key", variable = cv, command=checkcheck)
             newpl = tk.Label(t, text='Enter password:')
             newp = tk.Entry(t, show='*')
             newpcl = tk.Label(t, text='Confirm password:')
@@ -361,6 +378,7 @@ def checkusr(event=None):
             newl.pack()
             kl.pack()
             k.pack()
+            kc.pack()
             newpl.pack()
             newp.pack()
             newpcl.pack()
@@ -391,7 +409,7 @@ def checkusr(event=None):
             r = 5
             lbls = declabelandpwd(f, 'labels')
             lblsd = dict(enumerate(lbls))
-            for ind, lbl in lblsd.items(): 
+            for ind, lbl in list(lblsd.items()):
                     #print ind
                     tk.Radiobutton(window, indicatoron = 0, width = 20, height = 3, text = lbl, variable = buttonchoice, value = ind , command=pwdfromlbl).grid(row = r, column =  1)
                     r += 1
@@ -399,9 +417,11 @@ def checkusr(event=None):
         e = tk.Button(window, text = 'ENCRYPT \nPASSWORD', width = 20, pady = 5, command = encpass)
         d = tk.Button(window, text = 'SHOW DECRYPTED \nPASSWORD', width = 20, pady = 5, command = showpwd)
         cp = tk.Button(window, text = 'COPY PASSWORD \nTO CLIPBOARD', width = 20, pady = 5, command = cptoclip)
+        delete = tk.Button(window, text = 'DELETE AN ENCRYPTED \nPASSWORD', width = 20, pady = 5)
         d.grid(row = 5, column = 3)
         e.grid(row = 6, column = 3)
         cp.grid(row= 7, column = 3)
+        delete.grid(row = 8, column = 3)
     else:
         confirm.config(text='Your username and/or password is incorrect.' )
         usr.delete(0, tk.END)
@@ -434,7 +454,7 @@ def newuser():
     window.unbind("<Return>")
     def reg():
         #makes sure no two usr names are same, creates locker and displays success lbl
-        if users.has_key(newusr.get()) == False and newpas.get() == newcon.get():
+        if (newusr.get() in users) == False and newpas.get() == newcon.get():
             un = newusr.get()
             pw = newpas.get()
             apusrinfotofile(encrypt(un, 7), encrypt(pw, 7))
@@ -453,8 +473,8 @@ def newuser():
             window.bind("<Return>", checkusr)
     register = tk.Button(window, text="Register!", command=reg)
     register.pack(expand = True)
-    
-#LOGIN UI WIDGETS         
+
+#LOGIN UI WIDGETS
 
 ex = tk.Button(window, text = 'Exit', command= ee)
 logo = tk.PhotoImage(file='E:/Downloads/lock.gif')
