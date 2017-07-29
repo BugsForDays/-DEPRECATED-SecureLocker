@@ -477,7 +477,7 @@ def newuser():
 #LOGIN UI WIDGETS
 
 ex = tk.Button(window, text = 'Exit', command= ee)
-logo = tk.PhotoImage(file='E:/Downloads/lock.gif')
+logo = tk.PhotoImage(file='lock.gif')
 logolbl = tk.Label(window, text= '\n', image=logo, pady = 50)
 title = tk.Label(window, text="SecureLocker",  font =('Impact', 25))
 logtitle = tk.Label(window, text="\nVersion: " + str(ver) + "\n\nPlease Login:")
