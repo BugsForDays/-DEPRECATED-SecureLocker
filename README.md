@@ -1,3 +1,6 @@
+# DEPRECATED
+
+
 # SECURE LOCKER PASSWORD ENCRYTION MANAGER
 ###***************************************************************************
 ### A PYTHON PASSWORD ENCRYPTION MANAGER                                     
