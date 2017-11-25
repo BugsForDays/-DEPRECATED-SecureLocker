@@ -1,5 +1,5 @@
 # DEPRECATED
-
+THIS PROGRAM HAS BEEN UPDATED!!! ----> https://github.com/BugsForDays/Lokr
 
 # SECURE LOCKER PASSWORD ENCRYTION MANAGER
 ###***************************************************************************
